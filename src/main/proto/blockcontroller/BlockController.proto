@@ -1,0 +1,18 @@
+syntax = "proto3";
+option java_package = "com.ghostchu.botdefender.sysio.rpc.proto";
+option java_outer_classname = "BlockControllerProto";
+option java_generate_equals_and_hash = true;
+option java_string_check_utf8 = true;
+service BlockController {
+  rpc BlockAddress(BlockRequest) returns (Address) {}
+  rpc UnblockAddress(Address) returns (Address) {}
+}
+
+message Address{
+  string address = 1;
+}
+
+message BlockRequest{
+  Address address = 1;
+  int64 endTime = 2;
+}

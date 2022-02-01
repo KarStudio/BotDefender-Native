@@ -1,0 +1,59 @@
+package com.ghostchu.botdefender.sysio.rpc;
+
+import com.ghostchu.botdefender.sysio.Main;
+import com.ghostchu.botdefender.sysio.rpc.proto.BlockControllerGrpc;
+import com.ghostchu.botdefender.sysio.rpc.proto.BlockControllerProto;
+import com.ghostchu.botdefender.sysio.util.TimeUtil;
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
+import io.grpc.stub.StreamObserver;
+import lombok.extern.log4j.Log4j2;
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+@Log4j2
+public class RPCServer {
+    private int port;
+    private Server server;
+    private final Main main;
+    public RPCServer(@NotNull Main main, int port) throws IOException {
+        this.main = main;
+        this.port = port;
+        server = ServerBuilder.forPort(port)
+                .addService(new BlockerImpl(main))
+                .build();
+        server.start();
+    }
+
+    public void stop(){
+        try {
+            server.shutdownNow().awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    static class BlockerImpl extends BlockControllerGrpc.BlockControllerImplBase {
+        private final Main main;
+        public BlockerImpl(@NotNull Main main) {
+            this.main = main;
+        }
+        @Override
+        public void blockAddress(BlockControllerProto.BlockRequest request, StreamObserver<BlockControllerProto.Address> responseObserver) {
+            log.info("[RPC] Blocking {} for {}", request.getAddress(), TimeUtil.convert( request.getEndTime()- System.currentTimeMillis()));
+            main.blockIp(request.getAddress().getAddress(),request.getEndTime());
+            responseObserver.onNext(request.getAddress());
+            responseObserver.onCompleted();
+        }
+
+        @Override
+        public void unblockAddress(BlockControllerProto.Address request, StreamObserver<BlockControllerProto.Address> responseObserver) {
+            log.info("[RPC] Unblocking {}", request.getAddress());
+            main.unblockIp(request.getAddress());
+            responseObserver.onNext(request);
+            responseObserver.onCompleted();
+        }
+    }
+}
