@@ -25,7 +25,7 @@ public class IPSetUtil {
                 log.error("iptabels: FORWARD - hook into ipset 'botdefender' failed. Error: Code={}, Response={}", result.code(), result.response());
                 throw new IllegalStateException("iptables: FORWARD - hook into ipset 'botdefender' failed. Error: Code=" + result.code() + ", Response=" + result.response());
             }
-            result = ProcessUtil.exec("iptables -t raw -A PREROUTING -p tcp --dport 1:65500 -m set --match-set botdefender src -j DROP");
+            result = ProcessUtil.exec("iptables -t raw -A PREROUTING -p tcp --dport 1000:65500 -m set --match-set botdefender src -j DROP");
             if (result.code() == 0) {
                 log.info("iptables: PREROUTING - hook into ipset 'botdefender' successfully!");
             } else {
