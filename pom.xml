@@ -160,5 +160,10 @@
             <artifactId>configurate-yaml</artifactId>
             <version>4.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline</artifactId>
+            <version>3.21.0</version>
+        </dependency>
     </dependencies>
 </project>

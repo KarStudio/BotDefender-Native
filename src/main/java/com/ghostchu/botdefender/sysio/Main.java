@@ -3,14 +3,21 @@ package com.ghostchu.botdefender.sysio;
 import com.ghostchu.botdefender.sysio.ipset.IPSetUtil;
 import com.ghostchu.botdefender.sysio.rpc.RPCServer;
 import com.ghostchu.botdefender.sysio.util.TimeUtil;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
+import org.jline.reader.*;
+import org.jline.reader.impl.completer.AggregateCompleter;
+import org.jline.reader.impl.completer.ArgumentCompleter;
+import org.jline.reader.impl.completer.NullCompleter;
+import org.jline.reader.impl.completer.StringsCompleter;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Locale;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 @Log4j2
@@ -27,6 +34,7 @@ public class Main {
         new Main();
     }
 
+    @SneakyThrows
     public Main() {
         log.info("BotDefender Native by Ghost_chu for KarNetwork");
         log.info("This binary designed for unix like system and require ipset & iptables installed.");
@@ -37,6 +45,7 @@ public class Main {
             ipSetUtil.setup();
         } catch (IOException | InterruptedException e) {
             log.error("Error occurred while checking requirement.", e);
+            System.exit(-1);
         }
         log.info("Starting up RPC server...");
         try {
@@ -46,13 +55,46 @@ public class Main {
             log.error("Failed to start RPC server", e);
             System.exit(-1);
         }
-        Scanner scanner = new Scanner(System.in);
+        log.info("Starting up command listener...");
+        Completer blockCompleter = new ArgumentCompleter(
+                new StringsCompleter("ban","block","jail","add","create","new"),
+                new StringsCompleter("<ip>"),
+                new StringsCompleter("<duration>"),
+                NullCompleter.INSTANCE
+        );
+        Completer unblockCompleter = new ArgumentCompleter(
+                new StringsCompleter("unban","unblock","pardon","unjail","remove","del","delete","rm"),
+                new StringsCompleter("<ip>"),
+                NullCompleter.INSTANCE
+        );
+        Completer shutdownCompleter = new ArgumentCompleter(
+                new StringsCompleter("stop","close","shutdown","end","exit","eof"),
+                NullCompleter.INSTANCE
+        );
+        Completer bdnCompleter = new AggregateCompleter(
+                blockCompleter,
+                unblockCompleter,
+                shutdownCompleter
+        );
+        Terminal terminal = TerminalBuilder.builder()
+                .system(true)
+                .build();
+        LineReader lineReader = LineReaderBuilder.builder()
+                .terminal(terminal)
+                .completer(bdnCompleter)
+                .build();
+        final String prompt = "botdefender> ";
+
         while (true) {
-            String command = scanner.nextLine();
+            String line;
             try {
-                executeCommand(command);
-            }catch (Exception e){
-                log.error("Failed to execute command {}", command, e);
+                line = lineReader.readLine(prompt);
+                executeCommand(line);
+            } catch (UserInterruptException e) {
+                // Do nothing
+            } catch (EndOfFileException e) {
+                executeCommand("stop");
+                return;
             }
         }
     }
@@ -63,9 +105,9 @@ public class Main {
         String[] commandArgs = new String[commandArray.length];
         System.arraycopy(commandArray, 1, commandArgs, 0, commandArray.length - 1);
         switch (command.toLowerCase(Locale.ROOT)) {
-            case "stop", "shutdown", "close", "end" -> cmdShutdown();
-            case "block", "ban","jail","add","create","new" -> cmdBlock(commandArgs);
-            case "unblock","unban","pardon","unjail","remove","del","delete","rm" -> cmdUnblock(commandArgs);
+            case "stop", "shutdown", "close", "end", "exit" -> cmdShutdown();
+            case "block", "ban", "jail", "add", "create", "new" -> cmdBlock(commandArgs);
+            case "unblock", "unban", "pardon", "unjail", "remove", "del", "delete", "rm" -> cmdUnblock(commandArgs);
             default -> {
                 log.warn("Unknown command: " + command);
                 log.info("Available commands: stop, block, unblock");
