@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.net.SocketAddress;
 import java.util.concurrent.TimeUnit;
 
 @Log4j2
@@ -25,6 +26,9 @@ public class RPCServer {
                 .addService(new BlockerImpl(main))
                 .build();
         server.start();
+        for (SocketAddress listenSocket : server.getListenSockets()) {
+            log.info("Listening on " + listenSocket);
+        }
     }
 
     public void stop(){
