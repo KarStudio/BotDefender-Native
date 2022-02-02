@@ -16,9 +16,10 @@ import java.util.concurrent.TimeUnit;
 
 @Log4j2
 public class RPCServer {
+    private final Main main;
     private int port;
     private Server server;
-    private final Main main;
+
     public RPCServer(@NotNull Main main, int port) throws IOException {
         this.main = main;
         this.port = port;
@@ -31,7 +32,7 @@ public class RPCServer {
         }
     }
 
-    public void stop(){
+    public void stop() {
         try {
             server.shutdownNow().awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
@@ -41,13 +42,15 @@ public class RPCServer {
 
     static class BlockerImpl extends BlockControllerGrpc.BlockControllerImplBase {
         private final Main main;
+
         public BlockerImpl(@NotNull Main main) {
             this.main = main;
         }
+
         @Override
         public void blockAddress(BlockControllerProto.BlockRequest request, StreamObserver<BlockControllerProto.Address> responseObserver) {
-            log.info("[RPC] Blocking {} for {}", request.getAddress(), TimeUtil.convert( request.getDuration()));
-            main.blockIp(request.getAddress().getAddress(),request.getDuration());
+            log.info("[RPC] Blocking {} for {}", request.getAddress(), TimeUtil.convert(request.getDuration()));
+            main.blockIp(request.getAddress().getAddress(), request.getDuration());
             responseObserver.onNext(request.getAddress());
             responseObserver.onCompleted();
         }

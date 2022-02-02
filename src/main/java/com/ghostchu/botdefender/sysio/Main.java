@@ -26,19 +26,15 @@ public class Main {
     private final YamlConfigurationLoader loader = YamlConfigurationLoader.builder()
             .path(Path.of("config.yml")) // Set where we will load and save to
             .build();
+    private final BlockManager blockManager = new BlockManager();
     private RPCServer rpcServer;
     private short rpcPort = 4343;
-    private final BlockManager blockManager = new BlockManager();
-
-    public static void main(String[] args) {
-        new Main();
-    }
 
     @SneakyThrows
     public Main() {
         log.info("BotDefender Native by Ghost_chu for KarNetwork");
 
-        if(System.getProperty("port") != null){
+        if (System.getProperty("port") != null) {
             rpcPort = Short.parseShort(System.getProperty("port"));
             log.info("RPC port set to {} by system property", rpcPort);
         }
@@ -63,18 +59,18 @@ public class Main {
         }
         log.info("Starting up command listener...");
         Completer blockCompleter = new ArgumentCompleter(
-                new StringsCompleter("ban","block","jail","add","create","new"),
+                new StringsCompleter("ban", "block", "jail", "add", "create", "new"),
                 new StringsCompleter("<ip>"),
                 new StringsCompleter("<duration>"),
                 NullCompleter.INSTANCE
         );
         Completer unblockCompleter = new ArgumentCompleter(
-                new StringsCompleter("unban","unblock","pardon","unjail","remove","del","delete","rm"),
+                new StringsCompleter("unban", "unblock", "pardon", "unjail", "remove", "del", "delete", "rm"),
                 new StringsCompleter("<ip>"),
                 NullCompleter.INSTANCE
         );
         Completer shutdownCompleter = new ArgumentCompleter(
-                new StringsCompleter("stop","close","shutdown","end","exit","eof"),
+                new StringsCompleter("stop", "close", "shutdown", "end", "exit", "eof"),
                 NullCompleter.INSTANCE
         );
         Completer bdnCompleter = new AggregateCompleter(
@@ -100,10 +96,14 @@ public class Main {
             } catch (EndOfFileException e) {
                 executeCommand("stop");
                 return;
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.error("Error occurred while executing command.", e);
             }
         }
+    }
+
+    public static void main(String[] args) {
+        new Main();
     }
 
     private void executeCommand(String cmd) {
