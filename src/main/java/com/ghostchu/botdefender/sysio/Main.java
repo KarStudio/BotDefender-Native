@@ -111,7 +111,7 @@ public class Main {
             case "unblock", "unban", "pardon", "unjail", "remove", "del", "delete", "rm" -> cmdUnblock(commandArgs);
             default -> {
                 log.warn("Unknown command: " + command);
-                log.info("Available commands: stop, block, unblock");
+                log.info("Available commands: stop, block, unblock. Press TAB to check all commands");
             }
         }
     }
