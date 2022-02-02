@@ -46,9 +46,9 @@ public class IPSetUtil {
         }
     }
 
-    public void add(String ip, long endTime){
+    public void add(String ip, long duration){
         // timeout - ms to s
-        long sec = (endTime - System.currentTimeMillis()) / 1000;
+        long sec = duration / 1000;
         if(sec <= 0)
             sec = 1;
         ProcessResult result = ProcessUtil.exec("ipset add botdefender "+ip+" timeout "+sec);

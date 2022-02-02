@@ -14,5 +14,5 @@ message Address{
 
 message BlockRequest{
   Address address = 1;
-  int64 endTime = 2;
+  int64 duration = 2;
 }

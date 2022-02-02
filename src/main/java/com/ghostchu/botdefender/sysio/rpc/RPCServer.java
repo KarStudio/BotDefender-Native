@@ -42,8 +42,8 @@ public class RPCServer {
         }
         @Override
         public void blockAddress(BlockControllerProto.BlockRequest request, StreamObserver<BlockControllerProto.Address> responseObserver) {
-            log.info("[RPC] Blocking {} for {}", request.getAddress(), TimeUtil.convert( request.getEndTime()- System.currentTimeMillis()));
-            main.blockIp(request.getAddress().getAddress(),request.getEndTime());
+            log.info("[RPC] Blocking {} for {}", request.getAddress(), TimeUtil.convert( request.getDuration()));
+            main.blockIp(request.getAddress().getAddress(),request.getDuration());
             responseObserver.onNext(request.getAddress());
             responseObserver.onCompleted();
         }

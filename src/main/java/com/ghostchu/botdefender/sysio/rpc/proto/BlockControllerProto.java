@@ -602,10 +602,10 @@ public final class BlockControllerProto {
     com.ghostchu.botdefender.sysio.rpc.proto.BlockControllerProto.AddressOrBuilder getAddressOrBuilder();
 
     /**
-     * <code>int64 endTime = 2;</code>
-     * @return The endTime.
+     * <code>int64 duration = 2;</code>
+     * @return The duration.
      */
-    long getEndTime();
+    long getDuration();
   }
   /**
    * Protobuf type {@code BlockRequest}
@@ -667,7 +667,7 @@ public final class BlockControllerProto {
             }
             case 16: {
 
-              endTime_ = input.readInt64();
+              duration_ = input.readInt64();
               break;
             }
             default: {
@@ -728,15 +728,15 @@ public final class BlockControllerProto {
       return getAddress();
     }
 
-    public static final int ENDTIME_FIELD_NUMBER = 2;
-    private long endTime_;
+    public static final int DURATION_FIELD_NUMBER = 2;
+    private long duration_;
     /**
-     * <code>int64 endTime = 2;</code>
-     * @return The endTime.
+     * <code>int64 duration = 2;</code>
+     * @return The duration.
      */
     @java.lang.Override
-    public long getEndTime() {
-      return endTime_;
+    public long getDuration() {
+      return duration_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -756,8 +756,8 @@ public final class BlockControllerProto {
       if (address_ != null) {
         output.writeMessage(1, getAddress());
       }
-      if (endTime_ != 0L) {
-        output.writeInt64(2, endTime_);
+      if (duration_ != 0L) {
+        output.writeInt64(2, duration_);
       }
       unknownFields.writeTo(output);
     }
@@ -772,9 +772,9 @@ public final class BlockControllerProto {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, getAddress());
       }
-      if (endTime_ != 0L) {
+      if (duration_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(2, endTime_);
+          .computeInt64Size(2, duration_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -796,8 +796,8 @@ public final class BlockControllerProto {
         if (!getAddress()
             .equals(other.getAddress())) return false;
       }
-      if (getEndTime()
-          != other.getEndTime()) return false;
+      if (getDuration()
+          != other.getDuration()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -813,9 +813,9 @@ public final class BlockControllerProto {
         hash = (37 * hash) + ADDRESS_FIELD_NUMBER;
         hash = (53 * hash) + getAddress().hashCode();
       }
-      hash = (37 * hash) + ENDTIME_FIELD_NUMBER;
+      hash = (37 * hash) + DURATION_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getEndTime());
+          getDuration());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -955,7 +955,7 @@ public final class BlockControllerProto {
           address_ = null;
           addressBuilder_ = null;
         }
-        endTime_ = 0L;
+        duration_ = 0L;
 
         return this;
       }
@@ -988,7 +988,7 @@ public final class BlockControllerProto {
         } else {
           result.address_ = addressBuilder_.build();
         }
-        result.endTime_ = endTime_;
+        result.duration_ = duration_;
         onBuilt();
         return result;
       }
@@ -1040,8 +1040,8 @@ public final class BlockControllerProto {
         if (other.hasAddress()) {
           mergeAddress(other.getAddress());
         }
-        if (other.getEndTime() != 0L) {
-          setEndTime(other.getEndTime());
+        if (other.getDuration() != 0L) {
+          setDuration(other.getDuration());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1191,33 +1191,33 @@ public final class BlockControllerProto {
         return addressBuilder_;
       }
 
-      private long endTime_ ;
+      private long duration_ ;
       /**
-       * <code>int64 endTime = 2;</code>
-       * @return The endTime.
+       * <code>int64 duration = 2;</code>
+       * @return The duration.
        */
       @java.lang.Override
-      public long getEndTime() {
-        return endTime_;
+      public long getDuration() {
+        return duration_;
       }
       /**
-       * <code>int64 endTime = 2;</code>
-       * @param value The endTime to set.
+       * <code>int64 duration = 2;</code>
+       * @param value The duration to set.
        * @return This builder for chaining.
        */
-      public Builder setEndTime(long value) {
+      public Builder setDuration(long value) {
         
-        endTime_ = value;
+        duration_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int64 endTime = 2;</code>
+       * <code>int64 duration = 2;</code>
        * @return This builder for chaining.
        */
-      public Builder clearEndTime() {
+      public Builder clearDuration() {
         
-        endTime_ = 0L;
+        duration_ = 0L;
         onChanged();
         return this;
       }
@@ -1294,13 +1294,13 @@ public final class BlockControllerProto {
   static {
     java.lang.String[] descriptorData = {
       "\n%blockcontroller/BlockController.proto\"" +
-      "\032\n\007Address\022\017\n\007address\030\001 \001(\t\":\n\014BlockRequ" +
-      "est\022\031\n\007address\030\001 \001(\0132\010.Address\022\017\n\007endTim" +
-      "e\030\002 \001(\0032d\n\017BlockController\022)\n\014BlockAddre" +
-      "ss\022\r.BlockRequest\032\010.Address\"\000\022&\n\016Unblock" +
-      "Address\022\010.Address\032\010.Address\"\000BF\n(com.gho" +
-      "stchu.botdefender.sysio.rpc.protoB\024Block" +
-      "ControllerProto\240\001\001\330\001\001b\006proto3"
+      "\032\n\007Address\022\017\n\007address\030\001 \001(\t\";\n\014BlockRequ" +
+      "est\022\031\n\007address\030\001 \001(\0132\010.Address\022\020\n\010durati" +
+      "on\030\002 \001(\0032d\n\017BlockController\022)\n\014BlockAddr" +
+      "ess\022\r.BlockRequest\032\010.Address\"\000\022&\n\016Unbloc" +
+      "kAddress\022\010.Address\032\010.Address\"\000BF\n(com.gh" +
+      "ostchu.botdefender.sysio.rpc.protoB\024Bloc" +
+      "kControllerProto\240\001\001\330\001\001b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1317,7 +1317,7 @@ public final class BlockControllerProto {
     internal_static_BlockRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_BlockRequest_descriptor,
-        new java.lang.String[] { "Address", "EndTime", });
+        new java.lang.String[] { "Address", "Duration", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

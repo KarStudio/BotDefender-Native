@@ -80,7 +80,7 @@ public class Main {
         log.info("ip={}, time={}", args[0], args[1]);
         String ip = args[0];
         long time = TimeUtil.convert(args[1]);
-        if (blockIp(ip, System.currentTimeMillis() + time)) {
+        if (blockIp(ip, time)) {
             log.info("Blocking " + ip + " for " + TimeUtil.convert(time));
         } else {
             log.warn("IP " + ip + " already existed, you must unblock this ip before add new block.");
@@ -135,8 +135,8 @@ public class Main {
         log.info("ipset is OK.");
     }
 
-    public boolean blockIp(@NotNull String ip, long endTime) {
-        return blockManager.blockIp(ip, endTime);
+    public boolean blockIp(@NotNull String ip, long duration) {
+        return blockManager.blockIp(ip, duration);
     }
 
     public boolean unblockIp(@NotNull String ip) {

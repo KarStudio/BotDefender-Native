@@ -11,8 +11,8 @@ public class BlockManager {
 
     }
 
-    public boolean blockIp(@NotNull String ip, long endTime) {
-        ipSetUtil.add(ip, endTime);
+    public boolean blockIp(@NotNull String ip, long duration) {
+        ipSetUtil.add(ip, duration);
         return true;
     }
 
