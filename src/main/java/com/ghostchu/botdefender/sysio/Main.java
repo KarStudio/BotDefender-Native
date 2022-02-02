@@ -112,13 +112,35 @@ public class Main {
         String[] commandArgs = new String[commandArray.length];
         System.arraycopy(commandArray, 1, commandArgs, 0, commandArray.length - 1);
         switch (command.toLowerCase(Locale.ROOT)) {
-            case "stop", "shutdown", "close", "end", "exit" -> cmdShutdown();
-            case "block", "ban", "jail", "add", "create", "new" -> cmdBlock(commandArgs);
-            case "unblock", "unban", "pardon", "unjail", "remove", "del", "delete", "rm" -> cmdUnblock(commandArgs);
-            default -> {
+            case "stop":
+            case "shutdown":
+            case "close":
+            case "end":
+            case "exit":
+                cmdShutdown();
+                break;
+            case "block":
+            case "ban":
+            case "jail":
+            case "add":
+            case "create":
+            case "new":
+                cmdBlock(commandArgs);
+                break;
+            case "unblock":
+            case "unban":
+            case "pardon":
+            case "unjail":
+            case "remove":
+            case "del":
+            case "delete":
+            case "rm":
+                cmdUnblock(commandArgs);
+                break;
+            default:
                 log.warn("Unknown command: " + command);
                 log.info("Available commands: stop, block, unblock. Press TAB to check all commands");
-            }
+                break;
         }
     }
 

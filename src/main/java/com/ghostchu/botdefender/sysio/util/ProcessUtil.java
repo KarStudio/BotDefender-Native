@@ -24,7 +24,7 @@ public class ProcessUtil {
                     .start();
             pr.waitFor(5, TimeUnit.SECONDS);
             if (pr.isAlive()) {
-                log.warn("Process timed out: {}, pid: {}, giving up and killing...", shell, pr.pid());
+                log.warn("Process timed out: {}, giving up and killing...", shell);
                 pr.destroy();
                 return new ProcessResult(-1, "Process timed out");
             }
