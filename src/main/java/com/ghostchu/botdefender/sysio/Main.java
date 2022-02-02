@@ -27,7 +27,7 @@ public class Main {
             .path(Path.of("config.yml")) // Set where we will load and save to
             .build();
     private RPCServer rpcServer;
-    private final short rpcPort = 4343;
+    private short rpcPort = 4343;
     private final BlockManager blockManager = new BlockManager();
 
     public static void main(String[] args) {
@@ -37,6 +37,12 @@ public class Main {
     @SneakyThrows
     public Main() {
         log.info("BotDefender Native by Ghost_chu for KarNetwork");
+
+        if(System.getProperty("port") != null){
+            rpcPort = Short.parseShort(System.getProperty("port"));
+            log.info("RPC port set to {} by system property", rpcPort);
+        }
+
         log.info("This binary designed for unix like system and require ipset & iptables installed.");
         try {
             checkOS();
