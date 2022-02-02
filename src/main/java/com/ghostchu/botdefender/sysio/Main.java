@@ -83,18 +83,19 @@ public class Main {
                 .terminal(terminal)
                 .completer(bdnCompleter)
                 .build();
-        final String prompt = "botdefender> ";
 
         while (true) {
             String line;
             try {
-                line = lineReader.readLine(prompt);
+                line = lineReader.readLine();
                 executeCommand(line);
             } catch (UserInterruptException e) {
                 // Do nothing
             } catch (EndOfFileException e) {
                 executeCommand("stop");
                 return;
+            } catch (Exception e){
+                log.error("Error occurred while executing command.", e);
             }
         }
     }
