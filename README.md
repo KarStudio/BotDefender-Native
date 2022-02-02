@@ -17,7 +17,7 @@ BotDefender 特权应用程序
 ## 环境
 
 * **不支持 Windows 操作系统，节哀顺变**
-* 需要配合 BotDefender 使用。
+* 需要配合 [BotDefender](https://github.com/KarStudio/BotDefender) 使用。
 * **需要使用 root 权限运行** （或者需要拥有 iptables 和 ipset 的完整权限）
 * 系统已正确安装 iptables 和 ipset 工具
 
